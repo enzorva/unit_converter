@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Unit Converter</h1>
+
+        <form method="POST" action="/convert">
+            <label for="value">Enter Value:</label>
+            <input type="number" id="value" name="value" placeholder="Enter value" required>
+
+            <label for="category">Select Category:</label>
+            <select id="category" name="category">
+                <option value="length">Length</option>
+                <option value="weight">Weight</option>
+                <option value="temperature">Temperature</option>
+            </select>
+
+            <div id="length-section" class="section">
+                <label for="from-length">From:</label>
+                <select id="from-length" name="from-length">
+                    <option value="meters">Meters</option>
+                    <option value="kilometers">Kilometers</option>
+                    <option value="centimeters">Centimeters</option>
+                </select>
+                <label for="to-length">To:</label>
+                <select id="to-length" name="to-length">
+                    <option value="meters">Meters</option>
+                    <option value="kilometers">Kilometers</option>
+                    <option value="centimeters">Centimeters</option>
+                </select>
+            </div>
+
+            <div id="weight-section" class="section">
+                <label for="from-weight">From:</label>
+                <select id="from-weight" name="from-weight">
+                    <option value="kilograms">Kilograms</option>
+                    <option value="grams">Grams</option>
+                    <option value="pounds">Pounds</option>
+                </select>
+                <label for="to-weight">To:</label>
+                <select id="to-weight" name="to-weight">
+                    <option value="kilograms">Kilograms</option>
+                    <option value="grams">Grams</option>
+                    <option value="pounds">Pounds</option>
+                </select>
+            </div>
+
+            <div id="temperature-section" class="section">
+                <label for="from-temp">From:</label>
+                <select id="from-temp" name="from-temp">
+                    <option value="celsius">Celsius</option>
+                    <option value="fahrenheit">Fahrenheit</option>
+                    <option value="kelvin">Kelvin</option>
+                </select>
+                <label for="to-temp">To:</label>
+                <select id="to-temp" name="to-temp">
+                    <option value="celsius">Celsius</option>
+                    <option value="fahrenheit">Fahrenheit</option>
+                    <option value="kelvin">Kelvin</option>
+                </select>
+            </div>
+
+            <button type="submit">Convert</button>
+        </form>
+
+        {% if result %}
+        <h2>Converted Value:</h2>
+        <p>{{ result }}</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>
