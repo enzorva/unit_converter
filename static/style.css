@@ -1,60 +1,78 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
     margin: 0;
-    padding: 20px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f2f2f2;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
 }
 
-.container {
-    max-width: 500px;
-    margin: 0 auto;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.tall-box {
+    width: 450px;
+    height: 600px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border: 3.5px solid #000;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
+.title {
+    position: relative;
+    top: 10px;
+    left: 10px;
+    text-align: left;
+    padding: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 10px;
+}
+
+.btn {
+    background-color: #ffffff;
+    color: #000;
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #ffffff;
+}
+
+.btn.active {
+    color: blue;
+    text-decoration: underline;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.textfield {
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border: 3.5px solid #000;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
 label {
-    font-size: 14px;
-    color: #555;
-}
-
-input,
-select,
-button {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-}
-
-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-.section {
-    display: block;
-}
-
-h2 {
-    color: #333;
-}
-
-p {
-    font-size: 18px;
-    color: #555;
     font-weight: bold;
 }

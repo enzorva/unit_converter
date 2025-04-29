@@ -13,8 +13,8 @@ def convert():
     result = 0
 
     if category == 'length':
-        from_unit = request.form['from-lenght']
-        to_unit = request.form['to-lenght']
+        from_unit = request.form['from-length']
+        to_unit = request.form['to-length']
         result = convert_length(value, from_unit, to_unit)
     elif category == 'weight':
         from_unit = request.form['from-weight']
@@ -26,6 +26,10 @@ def convert():
         result = convert_temperature(value, from_unit, to_unit)
 
     return render_template('index.html', result=result)
+
+@app.route('/length')
+def length():
+    return render_template('length.html')
 
 def convert_length(value, from_unit, to_unit):
     conversions= {
