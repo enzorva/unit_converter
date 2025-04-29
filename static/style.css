@@ -75,4 +75,8 @@ body {
 
 label {
     font-weight: bold;
+    text-align: left;
+    align-self: flex-start;
+    padding-left: 5%;
+    box-sizing: border-box;
 }
