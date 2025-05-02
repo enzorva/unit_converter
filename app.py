@@ -2,8 +2,6 @@ from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
-
-
 @app.route('/convert', methods=['POST'])
 def convert():
     value = float(request.form['value'])
@@ -41,31 +39,72 @@ def weight():
 def temperature():
     return render_template('temperature.html')
 
+def normalize_unit(unit, category):
+    unit_mappings = {
+        'length': {
+            'm': 'meters', 'meters': 'meters',
+            'km': 'kilometers', 'kilometers': 'kilometers',
+            'cm': 'centimeters', 'centimeters': 'centimeters',
+            'mm': 'millimeters', 'millimeters': 'millimeters',
+            'in': 'inches', 'inches': 'inches',
+            'ft': 'feet', 'feet': 'feet',
+            'yd': 'yards', 'yards': 'yards',
+            'mi': 'miles', 'miles': 'miles'
+        },
+        'weight': {
+            'g': 'grams', 'grams': 'grams',
+            'kg': 'kilograms', 'kilograms': 'kilograms',
+            'mg': 'milligrams', 'milligrams': 'milligrams',
+            'lbs': 'pounds', 'pounds': 'pounds',
+            'oz': 'ounces', 'ounces': 'ounces'
+        },
+        'temperature': {
+            'c': 'Celsius', 'celsius': 'Celsius',
+            'f': 'Fahrenheit', 'fahrenheit': 'Fahrenheit',
+            'k': 'Kelvin', 'kelvin': 'Kelvin'
+        }
+    }
+
+    normalized = unit.lower()
+    for abbr, full_name in unit_mappings[category].items():
+        if normalized == abbr or normalized == full_name.lower():
+            return full_name
+    return None
+
+def normalize_value(value):
+    return float(value.replace(',', '.')) if ',' in value else float(value)
+
+def format_result(value, from_abbr, result, to_abbr):
+    if abs(result - round(result, 3)) > 0:
+        return f"{value} {from_abbr} ≈ {round(result, 3)} {to_abbr}"
+    else:
+        return f"{value} {from_abbr} = {result} {to_abbr}"
+
 @app.route('/convert_length', methods=['POST'])
 def convert_length_route():
-    value = request.form['value']
-    from_unit = request.form['from_unit']
-    to_unit = request.form['to_unit']
+    value = normalize_value(request.form['value'])
+    from_unit = normalize_unit(request.form['from_unit'], 'length')
+    to_unit = normalize_unit(request.form['to_unit'], 'length')
     result, from_abbr, to_abbr = convert_length(value, from_unit, to_unit)
-    print_result = f"{value} {from_abbr} = {result} {to_abbr}"
+    print_result = format_result(value, from_abbr, result, to_abbr)
     return render_template('length_result.html', result=print_result)
 
 @app.route('/convert_weight', methods=['POST'])
 def convert_weight_route():
-    value = request.form['value']
-    from_unit = request.form['from_unit']
-    to_unit = request.form['to_unit']
+    value = normalize_value(request.form['value'])
+    from_unit = normalize_unit(request.form['from_unit'], 'weight')
+    to_unit = normalize_unit(request.form['to_unit'], 'weight')
     result, from_abbr, to_abbr = convert_weight(value, from_unit, to_unit)
-    print_result = f"{value} {from_abbr} = {result} {to_abbr}"
+    print_result = format_result(value, from_abbr, result, to_abbr)
     return render_template('weight_result.html', result=print_result)
 
 @app.route('/convert_temperature', methods=['POST'])
 def convert_temperature_route():
-    value = request.form['value']
-    from_unit = request.form['from_unit']
-    to_unit = request.form['to_unit']
+    value = normalize_value(request.form['value'])
+    from_unit = normalize_unit(request.form['from_unit'], 'temperature')
+    to_unit = normalize_unit(request.form['to_unit'], 'temperature')
     result, from_abbr, to_abbr = convert_temperature(value, from_unit, to_unit)
-    print_result = f"{value} {from_abbr} = {result} {to_abbr}"
+    print_result = format_result(value, from_abbr, result, to_abbr)
     return render_template('temperature_result.html', result=print_result)
 
 def convert_length(value, from_unit, to_unit):
@@ -83,7 +122,7 @@ def convert_length(value, from_unit, to_unit):
 
     from_abbr, from_factor = conversions[from_unit]
     to_abbr, to_factor = conversions[to_unit]
-    result = round(value * to_factor / from_factor,2)
+    result = value * to_factor / from_factor
     return result, from_abbr, to_abbr
 
 def convert_weight(value, from_unit, to_unit):
@@ -97,7 +136,7 @@ def convert_weight(value, from_unit, to_unit):
     }
     from_abbr, from_factor = conversions[from_unit]
     to_abbr, to_factor = conversions[to_unit]
-    result = round(value * to_factor / from_factor,2)
+    result = value * to_factor / from_factor
     return result, from_abbr, to_abbr
 
 def convert_temperature(value, from_unit, to_unit):
@@ -110,9 +149,9 @@ def convert_temperature(value, from_unit, to_unit):
 
     if from_unit == 'Celsius':
         if to_unit == 'Fahrenheit':
-            result = (value * 9/5) + 32
+            result = round((value * 9/5) + 32, 2)
         elif to_unit == 'Kelvin':
-            result = value + 273.15
+            result = round(value + 273.15, 2)
         else:
             result = value
     elif from_unit == 'Fahrenheit':
@@ -126,7 +165,7 @@ def convert_temperature(value, from_unit, to_unit):
         if to_unit == 'Celsius':
             result = value - 273.15
         elif to_unit == 'Fahrenheit':
-            result = (value - 273.15) * 9/5 + 32
+            result = (value - 273.15) * 9/5 + 32, 2
         else:
             result = value
     else:

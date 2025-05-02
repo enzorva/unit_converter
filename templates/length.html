@@ -29,14 +29,53 @@
             <button type="submit" class="btn">Convert</button>
         </form>
 
+        <div class="info-box">
+            <h3>Supported Units</h3>
+            <ul>
+                <li>Meters (m)</li>
+                <li>Kilometers (km)</li>
+                <li>Centimeters (cm)</li>
+                <li>Millimeters (mm)</li>
+                <li>Inches (in)</li>
+                <li>Feet (ft)</li>
+                <li>Yards (yd)</li>
+                <li>Miles (mi)</li>
+            </ul>
+        </div>
+
         <script>
-            document.querySelector('form').addEventListener('submit', function (event) {
+            document.querySelector('form').addEventListener('submit', async function (event) {
                 const valueField = document.getElementById('value');
                 const fromUnitField = document.getElementById('from-unit');
                 const toUnitField = document.getElementById('to-unit');
 
                 if (!valueField.value.trim() || !fromUnitField.value.trim() || !toUnitField.value.trim()) {
                     alert('Please fill in all fields before converting.');
+                    event.preventDefault();
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/validate_units', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            from_unit: fromUnitField.value,
+                            to_unit: toUnitField.value,
+                            category: 'length'
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (!data.valid) {
+                        alert('One or more units are not recognized. Please check your input.');
+                        event.preventDefault();
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while validating units.');
                     event.preventDefault();
                 }
             });
