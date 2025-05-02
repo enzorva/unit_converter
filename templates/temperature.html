@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Length Converter</title>
+    <title>Temperature Converter</title>
     <link rel="stylesheet" href="../static/style.css">
 </head>
 
@@ -12,12 +12,12 @@
     <div class="tall-box">
         <div class="title">Unit Converter</div>
         <div class="buttons">
-            <a href="/length" class="btn active">Length</a>
+            <a href="/length" class="btn">Length</a>
             <a href="/weight" class="btn">Weight</a>
-            <a href="/temperature" class="btn">Temperature</a>
+            <a href="/temperature" class="btn active">Temperature</a>
         </div>
-        <form action="/convert_length" method="POST" class="form">
-            <label for="value">Enter the length to convert</label>
+        <form action="/convert_temperature" method="POST" class="form">
+            <label for="value">Enter the temperature to convert</label>
             <input type="text" id="value" name="value" class="textfield">
 
             <label for="from-unit">Unit to convert from</label>
