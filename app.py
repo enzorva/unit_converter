@@ -39,6 +39,20 @@ def weight():
 def temperature():
     return render_template('temperature.html')
 
+@app.route('/validate_units', methods=['POST'])
+def validate_units():
+    data = request.get_json()
+    from_unit = data.get('from_unit', '').strip()
+    to_unit = data.get('to_unit', '').strip()
+    category = data.get('category', '').strip()
+
+    try:
+        normalize_unit(from_unit, category)
+        normalize_unit(to_unit, category)
+        return {'valid': True}, 200
+    except ValueError:
+        return {'valid': False}, 400
+
 def normalize_unit(unit, category):
     unit_mappings = {
         'length': {
